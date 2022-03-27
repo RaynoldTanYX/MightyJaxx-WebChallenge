@@ -1,13 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   ThemeProvider,
   createTheme,
   responsiveFontSizes,
 } from "@mui/material/styles";
 import reportWebVitals from "./reportWebVitals";
-import LogIn from "./pages/Authentication/LogIn";
+import App from "./App";
+import store from "./redux/store";
+import { Provider } from "react-redux";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -15,11 +16,9 @@ theme = responsiveFontSizes(theme);
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LogIn />} />
-        </Routes>
-      </BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")

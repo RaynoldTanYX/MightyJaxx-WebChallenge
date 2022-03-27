@@ -1,16 +1,29 @@
 import { useState } from "react";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  FormHelperText,
+  TextField,
+  Typography,
+} from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/actions";
+import { Navigate } from "react-router-dom";
 
 const LogIn = () => {
-  const [emailValue, setEmailValue] = useState("");
-  const [passwordValue, setPasswordValue] = useState("");
+  const dispatch = useDispatch();
+  const { loading, currentUser, error } = useSelector((state) => state.user);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
+    dispatch(login(email, password));
   };
 
-  return (
+  const renderLoginForm = () => (
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
@@ -34,7 +47,7 @@ const LogIn = () => {
             autoComplete="email"
             type="email"
             autoFocus
-            onChange={(event) => setEmailValue(event.currentTarget.value)}
+            onChange={(event) => setEmail(event.currentTarget.value)}
           />
           <TextField
             margin="normal"
@@ -45,20 +58,28 @@ const LogIn = () => {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={(event) => setPasswordValue(event.currentTarget.value)}
+            onChange={(event) => setPassword(event.currentTarget.value)}
           />
-          <Button
+          {error && (
+            <FormHelperText error>Incorrect email or password</FormHelperText>
+          )}
+          <LoadingButton
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            loading={loading}
           >
             Sign In
-          </Button>
+          </LoadingButton>
         </Box>
       </Box>
     </Container>
   );
+
+  const redirectToDashboard = () => <Navigate to={{ pathname: "/" }} />;
+
+  return !currentUser ? renderLoginForm() : redirectToDashboard();
 };
 
 export default LogIn;
