@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -8,12 +8,16 @@ import {
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../redux/actions";
+import { checkLocalStorageForLogin, login } from "../../redux/actions";
 import { Navigate } from "react-router-dom";
 
 const LogIn = () => {
   const dispatch = useDispatch();
   const { loading, currentUser, error } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(checkLocalStorageForLogin());
+  }, [dispatch]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -22,7 +22,17 @@ export const login = (email, password) => {
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         dispatch(loginSuccess(user));
+        localStorage.setItem("user", user);
       })
       .catch((error) => dispatch(loginFail(error.message)));
+  };
+};
+
+export const checkLocalStorageForLogin = () => {
+  return function (dispatch) {
+    const user = localStorage.getItem("user");
+    if (user) {
+      dispatch(loginSuccess(user));
+    }
   };
 };
