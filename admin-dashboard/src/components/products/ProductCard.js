@@ -18,10 +18,8 @@ const ProductCard = ({ product }) => {
         <Grid item>
           <Typography variant="caption">SKU: {id}</Typography>
         </Grid>
-        <Grid item>
-          <CardMedia component="img" image={image} height="200" />
-        </Grid>
       </Grid>
+      <CardMedia component="img" image={image} height="200" />
     </Card>
   );
 };
