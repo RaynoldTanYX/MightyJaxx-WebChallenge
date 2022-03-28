@@ -22,7 +22,8 @@ export const login = (email, password) => {
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         dispatch(loginSuccess(user));
-        localStorage.setItem("user", user);
+        localStorage.setItem("userAccessToken", user.accessToken);
+        localStorage.setItem("userEmail", user.email);
       })
       .catch((error) => dispatch(loginFail(error.message)));
   };
@@ -30,9 +31,10 @@ export const login = (email, password) => {
 
 export const checkLocalStorageForLogin = () => {
   return function (dispatch) {
-    const user = localStorage.getItem("user");
-    if (user) {
-      dispatch(loginSuccess(user));
+    const accessToken = localStorage.getItem("userAccessToken");
+    const email = localStorage.getItem("userEmail");
+    if (accessToken && email) {
+      dispatch(loginSuccess({ accessToken, email }));
     }
   };
 };
@@ -56,7 +58,8 @@ export const logout = () => {
     signOut(auth)
       .then(() => {
         dispatch(logoutSuccess());
-        localStorage.removeItem("user");
+        localStorage.removeItem("userAccessToken");
+        localStorage.removeItem("userEmail");
       })
       .catch((error) => dispatch(logoutFail(error.message)));
   };
