@@ -1,6 +1,6 @@
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/actions";
+import { logout } from "../redux/actions/userActions";
 
 const LogoutButton = () => {
   const dispatch = useDispatch();
