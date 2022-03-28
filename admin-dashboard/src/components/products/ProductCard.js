@@ -5,13 +5,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <Card style={{ height: "100%" }}>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        spacing="2"
-        style={{ padding: 16 }}
-      >
+      <Grid container direction="column" spacing="2" style={{ padding: 16 }}>
         <Grid item>
           <Typography variant="h5">{title}</Typography>
         </Grid>
