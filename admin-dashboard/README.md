@@ -16,3 +16,18 @@ Requires: `npm`
 1. In the terminal, navigate to `/MightyJaxx-WebChallenge/admin-dashboard`.
 2. Run `npm start` to start the app in development mode.
 3. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+### Using the app
+
+On first start, the user will not be logged in, and will be redirected to `/login`.
+
+Here, the user can login with the following credentials
+Email: `admin@test.com`
+Password: `12345678`
+Authentication is handled using `Firebase Authentication`.
+
+Upon successfully logging in, the user will be redirected to the dashboard.
+On the top-left of the screen, the user can logout and return to the login page.
+
+On the dashboard, the user can `Add`, `Edit`, and `Delete` product listings.
+These products are persistently stored using `Firestore`.
