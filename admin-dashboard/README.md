@@ -22,8 +22,10 @@ Requires: `npm`
 On first start, the user will not be logged in, and will be redirected to `/login`.
 
 Here, the user can login with the following credentials
-Email: `admin@test.com`
-Password: `12345678`
+
+> Email: `admin@test.com`
+> Password: `12345678`
+
 Authentication is handled using `Firebase Authentication`.
 
 Upon successfully logging in, the user will be redirected to the dashboard.
