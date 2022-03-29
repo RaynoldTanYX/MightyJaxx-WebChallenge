@@ -15,17 +15,24 @@ const ProductList = () => {
   const { loading, products, error } = useSelector((state) => state.products);
 
   return (
-    <Grid container spacing={4} style={{ margin: 32 }}>
-      <Grid item xs={12} sm={6} md={3} lg={2} style={{ minHeight: 300 }}>
+    <Grid container spacing={4} style={{ padding: 32 }}>
+      <Grid item xs={12} md={6} xl={4} style={{ minHeight: 300 }}>
         <AddProductCard />
       </Grid>
       {loading ? (
-        <Grid item xs={12} sm={6} md={3} lg={2} style={{ minHeight: 300 }}>
+        <Grid item xs={12} md={6} xl={4} style={{ minHeight: 300 }}>
           <LoadingProductCard />
         </Grid>
       ) : (
         products?.map((product) => (
-          <Grid item xs={12} sm={6} md={3} lg={2} style={{ minHeight: 300 }}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            xl={4}
+            style={{ height: 400 }}
+            key={product.id}
+          >
             <ProductCard product={product} />
           </Grid>
         ))
