@@ -4,12 +4,14 @@
 
 ## Setup
 
+Requires: `npm`
+
 1. Clone this repository.
 2. Add `/MightyJaxx-WebChallenge/admin-dashboard/.env` with the values provided via email.
 3. In the terminal, navigate to `/MightyJaxx-WebChallenge/admin-dashboard`.
 4. Run `npm install` to install all the required `node_modules`.
 
-## How to run?
+## Running the app
 
 1. In the terminal, navigate to `/MightyJaxx-WebChallenge/admin-dashboard`.
 2. Run `npm start` to start the app in development mode.
