@@ -1,13 +1,23 @@
 import LoadingButton from "@mui/lab/LoadingButton";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import {
+  addProduct,
+  deleteProduct,
+  editProduct,
+} from "../../redux/actions/productActions";
 
 const EditProductCard = ({ product, onCancel }) => {
+  const { loading } = useSelector((state) => state.products.product);
+
   const [title, setTitle] = useState(product?.title || "");
   const [id, setId] = useState(product?.id || "");
   const [image, setImage] = useState(product?.image || "");
+  const editedProduct = { title, id, image };
 
+  const dispatch = useDispatch();
   const isEdit = !!product;
 
   const handleImageSelect = (files) => {
@@ -18,16 +28,22 @@ const EditProductCard = ({ product, onCancel }) => {
     };
   };
 
-  const handleCreateProduct = () => {};
+  const handleCreateProduct = () => {
+    dispatch(addProduct(editedProduct));
+  };
 
-  const handleEditProduct = () => {};
+  const handleEditProduct = () => {
+    dispatch(editProduct(editedProduct));
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteProduct(editedProduct));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     isEdit ? handleEditProduct() : handleCreateProduct();
   };
-
-  const handleDelete = () => {};
 
   return (
     <Card style={{ height: "100%" }}>
@@ -52,6 +68,7 @@ const EditProductCard = ({ product, onCancel }) => {
               label="SKU"
               fullWidth
               required
+              disabled={isEdit}
               value={id}
               onChange={(event) => setId(event.currentTarget.value)}
             />
@@ -80,11 +97,17 @@ const EditProductCard = ({ product, onCancel }) => {
             </Grid>
             {isEdit && (
               <Grid item>
-                <Button onClick={handleDelete}>Delete</Button>
+                <LoadingButton onClick={handleDelete} loading={loading}>
+                  Delete
+                </LoadingButton>
               </Grid>
             )}
             <Grid item>
-              <LoadingButton variant="contained" type="submit">
+              <LoadingButton
+                variant="contained"
+                type="submit"
+                loading={loading}
+              >
                 Submit
               </LoadingButton>
             </Grid>
