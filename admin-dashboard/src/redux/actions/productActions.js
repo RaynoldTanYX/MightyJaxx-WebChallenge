@@ -116,7 +116,6 @@ export const editProduct = (product, { onSuccess, onError }) => {
 
     try {
       let imageUrl = "";
-      console.log(product);
       if (product.image?.substring(0, 5) === "data:") {
         const imageUpload = await uploadImage(product.image);
         imageUrl = await getDownloadURL(ref(storage, imageUpload.ref.fullPath));
