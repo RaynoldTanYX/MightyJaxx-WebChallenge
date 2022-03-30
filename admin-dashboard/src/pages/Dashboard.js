@@ -21,13 +21,13 @@ const Dashboard = () => {
   };
 
   const renderDashboard = () => (
-    <Box style={{ margin: 32, padding: 32 }}>
+    <Box style={{ padding: 32 }}>
       <Typography variant="h3">Admin Dashboard</Typography>
       <Typography variant="caption">
         Logged in as {currentUser.email}
       </Typography>
       <LogoutButton />
-      <Paper style={{ margin: 32, padding: 32 }}>
+      <Paper style={{ padding: 32 }}>
         {renderSearchbar()}
         <ProductList textFilter={searchInput} />
       </Paper>
