@@ -18,11 +18,15 @@ const ProductCard = ({ product }) => {
     return (
       <Card style={{ height: "100%" }}>
         <Grid container direction="column" spacing="2" style={{ padding: 16 }}>
-          <Grid item>
-            <Typography variant="h5">{title}</Typography>
+          <Grid item style={{ width: "100%" }}>
+            <Typography variant="h5" noWrap>
+              {title}
+            </Typography>
           </Grid>
-          <Grid item>
-            <Typography variant="caption">SKU: {id}</Typography>
+          <Grid item style={{ width: "100%" }}>
+            <Typography variant="subtitle1" noWrap>
+              SKU: {id}
+            </Typography>
           </Grid>
         </Grid>
         <CardMedia
