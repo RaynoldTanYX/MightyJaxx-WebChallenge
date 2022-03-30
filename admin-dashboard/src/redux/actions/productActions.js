@@ -1,4 +1,4 @@
-import { db } from "../../firebase";
+import { db, storage } from "../../firebase";
 import {
   getDocs,
   getDoc,
@@ -8,6 +8,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import * as types from "../actionTypes";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 const productsRef = collection(db, "products");
 
@@ -45,6 +46,11 @@ export const fetchProductList = () => {
   };
 };
 
+const uploadImage = async (image) => {
+  const storageRef = ref(storage, `images/${Date.now()}.jpg`);
+  return uploadString(storageRef, image, "data_url");
+};
+
 export const addProduct = (product) => {
   return async function (dispatch) {
     dispatch({
@@ -60,20 +66,23 @@ export const addProduct = (product) => {
       });
       return;
     }
-
-    setDoc(docRef, product)
-      .then(() => {
-        dispatch({
-          type: types.ADD_PRODUCT_SUCCESS,
-          payload: product,
-        });
-      })
-      .catch((error) => {
-        dispatch({
-          type: types.ADD_PRODUCT_FAIL,
-          payload: error,
-        });
+    try {
+      let imageUrl = "";
+      if (product.image) {
+        const imageUpload = await uploadImage(product.image);
+        imageUrl = await getDownloadURL(ref(storage, imageUpload.ref.fullPath));
+      }
+      await setDoc(docRef, { ...product, image: imageUrl });
+      dispatch({
+        type: types.ADD_PRODUCT_SUCCESS,
+        payload: product,
       });
+    } catch (error) {
+      dispatch({
+        type: types.ADD_PRODUCT_FAIL,
+        payload: error,
+      });
+    }
   };
 };
 
@@ -92,19 +101,24 @@ export const editProduct = (product) => {
       return;
     }
 
-    setDoc(docRef, product)
-      .then(() => {
-        dispatch({
-          type: types.EDIT_PRODUCT_SUCCESS,
-          payload: product,
-        });
-      })
-      .catch((error) => {
-        dispatch({
-          type: types.EDIT_PRODUCT_FAIL,
-          payload: error,
-        });
+    try {
+      let imageUrl = "";
+      console.log(product);
+      if (product.image?.substring(0, 5) === "data:") {
+        const imageUpload = await uploadImage(product.image);
+        imageUrl = await getDownloadURL(ref(storage, imageUpload.ref.fullPath));
+      }
+      await setDoc(docRef, { ...product, image: imageUrl });
+      dispatch({
+        type: types.EDIT_PRODUCT_SUCCESS,
+        payload: product,
       });
+    } catch (error) {
+      dispatch({
+        type: types.EDIT_PRODUCT_FAIL,
+        payload: error,
+      });
+    }
   };
 };
 
