@@ -9,6 +9,7 @@ import {
   Timestamp,
   query,
   orderBy,
+  updateDoc,
 } from "firebase/firestore";
 import * as types from "../constants/actionTypes";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
@@ -30,10 +31,13 @@ const fetchProductsFail = (error) => ({
 });
 
 const extractProductData = (doc) => {
+  const fields = doc._document.data.value.mapValue.fields;
   return {
     id: doc.id,
-    title: doc._document.data.value.mapValue.fields.title.stringValue,
-    image: doc._document.data.value.mapValue.fields.image.stringValue,
+    title: fields.title.stringValue,
+    image: fields.image.stringValue,
+    createdAt: fields.createdAt.timestampValue,
+    updatedAt: fields.updatedAt.timestampValue,
   };
 };
 
@@ -77,15 +81,16 @@ export const addProduct = (product, { onSuccess, onError }) => {
         const imageUpload = await uploadImage(product.image);
         imageUrl = await getDownloadURL(ref(storage, imageUpload.ref.fullPath));
       }
-      await setDoc(docRef, {
+      const newProduct = {
         ...product,
         image: imageUrl,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
-      });
+      };
+      await setDoc(docRef, newProduct);
       dispatch({
         type: types.ADD_PRODUCT_SUCCESS,
-        payload: product,
+        payload: newProduct,
       });
       onSuccess();
     } catch (error) {
@@ -104,30 +109,23 @@ export const editProduct = (product, { onSuccess, onError }) => {
       type: types.EDIT_PRODUCT_INITIATE,
     });
     const docRef = doc(db, "products", product.id);
-    const docResult = await getDoc(docRef);
-    if (!docResult.exists()) {
-      dispatch({
-        type: types.EDIT_PRODUCT_FAIL,
-        payload: "Product does not exist",
-      });
-      onError("Product does not exist");
-      return;
-    }
 
     try {
       let imageUrl = "";
-      if (product.image?.substring(0, 5) === "data:") {
+      const isNewImage = product.image?.substring(0, 5) === "data:";
+      if (isNewImage) {
         const imageUpload = await uploadImage(product.image);
         imageUrl = await getDownloadURL(ref(storage, imageUpload.ref.fullPath));
       }
-      await setDoc(docRef, {
+      const updatedProduct = {
         ...product,
-        image: imageUrl,
+        ...(isNewImage && { image: imageUrl }),
         updatedAt: Timestamp.now(),
-      });
+      };
+      await updateDoc(docRef, updatedProduct);
       dispatch({
         type: types.EDIT_PRODUCT_SUCCESS,
-        payload: product,
+        payload: updatedProduct,
       });
       onSuccess();
     } catch (error) {
