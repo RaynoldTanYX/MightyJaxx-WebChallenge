@@ -55,7 +55,7 @@ const uploadImage = async (image) => {
   return uploadString(storageRef, image, "data_url");
 };
 
-export const addProduct = (product) => {
+export const addProduct = (product, { onSuccess, onError }) => {
   return async function (dispatch) {
     dispatch({
       type: types.ADD_PRODUCT_INITIATE,
@@ -68,6 +68,7 @@ export const addProduct = (product) => {
         type: types.ADD_PRODUCT_FAIL,
         payload: "Product with same SKU already exists",
       });
+      onError("Product with same SKU already exists");
       return;
     }
     try {
@@ -86,16 +87,18 @@ export const addProduct = (product) => {
         type: types.ADD_PRODUCT_SUCCESS,
         payload: product,
       });
+      onSuccess();
     } catch (error) {
       dispatch({
         type: types.ADD_PRODUCT_FAIL,
         payload: error,
       });
+      onError(error);
     }
   };
 };
 
-export const editProduct = (product) => {
+export const editProduct = (product, { onSuccess, onError }) => {
   return async function (dispatch) {
     dispatch({
       type: types.EDIT_PRODUCT_INITIATE,
@@ -107,6 +110,7 @@ export const editProduct = (product) => {
         type: types.EDIT_PRODUCT_FAIL,
         payload: "Product does not exist",
       });
+      onError("Product does not exist");
       return;
     }
 
@@ -126,16 +130,18 @@ export const editProduct = (product) => {
         type: types.EDIT_PRODUCT_SUCCESS,
         payload: product,
       });
+      onSuccess();
     } catch (error) {
       dispatch({
         type: types.EDIT_PRODUCT_FAIL,
         payload: error,
       });
+      onError(error);
     }
   };
 };
 
-export const deleteProduct = (product) => {
+export const deleteProduct = (product, { onSuccess, onError }) => {
   return async function (dispatch) {
     dispatch({
       type: types.DELETE_PRODUCT_INITIATE,
@@ -147,6 +153,7 @@ export const deleteProduct = (product) => {
         type: types.DELETE_PRODUCT_FAIL,
         payload: "Product does not exist",
       });
+      onError("Product does not exist");
       return;
     }
 
@@ -156,12 +163,14 @@ export const deleteProduct = (product) => {
           type: types.DELETE_PRODUCT_SUCCESS,
           payload: product,
         });
+        onError(onSuccess);
       })
       .catch((error) => {
         dispatch({
           type: types.DELETE_PRODUCT_FAIL,
           payload: error,
         });
+        onError(error);
       });
   };
 };

@@ -1,6 +1,6 @@
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, Grid, TextField } from "@mui/material";
+import { Button, Card, Grid, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import {
@@ -17,8 +17,19 @@ const EditProductCard = ({ product, onCancel }) => {
   const [image, setImage] = useState(product?.image || "");
   const editedProduct = { title, id, image };
 
+  const [error, setError] = useState("");
+
   const dispatch = useDispatch();
   const isEdit = !!product;
+
+  const onSuccess = () => {
+    setError("");
+    onCancel();
+  };
+
+  const onError = (error) => {
+    setError(error);
+  };
 
   const handleImageSelect = (files) => {
     const fileReader = new FileReader();
@@ -29,15 +40,15 @@ const EditProductCard = ({ product, onCancel }) => {
   };
 
   const handleCreateProduct = () => {
-    dispatch(addProduct(editedProduct));
+    dispatch(addProduct(editedProduct, { onSuccess, onError }));
   };
 
   const handleEditProduct = () => {
-    dispatch(editProduct(editedProduct));
+    dispatch(editProduct(editedProduct, { onSuccess, onError }));
   };
 
   const handleDelete = () => {
-    dispatch(deleteProduct(editedProduct));
+    dispatch(deleteProduct(editedProduct, { onSuccess: () => {}, onError }));
   };
 
   const handleSubmit = (e) => {
@@ -84,6 +95,15 @@ const EditProductCard = ({ product, onCancel }) => {
               />
             </Button>
           </Grid>
+
+          {error && (
+            <Grid item>
+              <Typography variant="caption" style={{ color: "red" }}>
+                {error}
+              </Typography>
+            </Grid>
+          )}
+
           <Grid
             container
             item
