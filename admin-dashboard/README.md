@@ -37,8 +37,9 @@ The optionally uploaded images are stored on `Firebase Storage`
 
 ## Potential Improvements
 
-1. Pagination or Lazy Loading
-2. Search using backend or services such as ElasticSearch or Algolia
-3. Determinate loading progress for image uploads
-4. Request optimized image resolution and format using CDNs such as Cloudinary
-5. Unit, integration, and end-to-end tests running on CI
+1. Better UI feedback when the user selects an image
+2. Pagination or Lazy Loading when fetching list of products
+3. Search using backend or services such as ElasticSearch or Algolia
+4. Determinate loading progress for image uploads
+5. Request optimized image resolution and format using CDNs such as Cloudinary
+6. Unit, integration, and end-to-end tests running on CI
