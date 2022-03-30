@@ -47,7 +47,7 @@ export const fetchProductList = () => {
 };
 
 const uploadImage = async (image) => {
-  const storageRef = ref(storage, `images/${Date.now()}.jpg`);
+  const storageRef = ref(storage, `images/${Date.now()}`);
   return uploadString(storageRef, image, "data_url");
 };
 
