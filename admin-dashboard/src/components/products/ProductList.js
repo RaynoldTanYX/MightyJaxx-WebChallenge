@@ -6,13 +6,20 @@ import AddProductCard from "./AddProductCard";
 import LoadingProductCard from "./LoadingProductCard";
 import ProductCard from "./ProductCard";
 
-const ProductList = () => {
+const ProductList = ({ textFilter }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchProductList());
   }, [dispatch]);
 
   const { loading, products, error } = useSelector((state) => state.products);
+  const filteredProducts =
+    textFilter !== ""
+      ? products?.filter((product) =>
+          product.title.toLowerCase().includes(textFilter.toLowerCase())
+        )
+      : products;
+
   return (
     <>
       {error && (
@@ -29,7 +36,7 @@ const ProductList = () => {
             <LoadingProductCard />
           </Grid>
         ) : (
-          products?.map((product) => (
+          filteredProducts?.map((product) => (
             <Grid
               item
               xs={12}
