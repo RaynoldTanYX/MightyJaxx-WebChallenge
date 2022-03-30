@@ -33,3 +33,4 @@ On the top-left of the screen, the user can logout and return to the login page.
 
 On the dashboard, the user can `Add`, `Edit`, and `Delete` product listings.
 These products are persistently stored using `Firestore`.
+The optionally uploaded images are stored on `Firebase Storage`
