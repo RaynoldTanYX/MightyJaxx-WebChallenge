@@ -27,7 +27,7 @@ const ProductList = ({ textFilter }) => {
           An error occurred: {error}
         </Typography>
       )}
-      <Grid container spacing={4} style={{ padding: 32 }}>
+      <Grid container spacing={4}>
         <Grid item xs={12} md={6} xl={4} style={{ minHeight: 300 }}>
           <AddProductCard />
         </Grid>
