@@ -6,6 +6,9 @@ import {
   collection,
   doc,
   deleteDoc,
+  Timestamp,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import * as types from "../actionTypes";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
@@ -37,7 +40,8 @@ const extractProductData = (doc) => {
 export const fetchProductList = () => {
   return function (dispatch) {
     dispatch(fetchProductsInitiate());
-    getDocs(productsRef)
+    const productsQuery = query(productsRef, orderBy("createdAt", "desc"));
+    getDocs(productsQuery)
       .then((data) => {
         const products = data.docs.map((doc) => extractProductData(doc));
         dispatch(fetchProductsSuccess(products));
@@ -72,7 +76,12 @@ export const addProduct = (product) => {
         const imageUpload = await uploadImage(product.image);
         imageUrl = await getDownloadURL(ref(storage, imageUpload.ref.fullPath));
       }
-      await setDoc(docRef, { ...product, image: imageUrl });
+      await setDoc(docRef, {
+        ...product,
+        image: imageUrl,
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+      });
       dispatch({
         type: types.ADD_PRODUCT_SUCCESS,
         payload: product,
@@ -108,7 +117,11 @@ export const editProduct = (product) => {
         const imageUpload = await uploadImage(product.image);
         imageUrl = await getDownloadURL(ref(storage, imageUpload.ref.fullPath));
       }
-      await setDoc(docRef, { ...product, image: imageUrl });
+      await setDoc(docRef, {
+        ...product,
+        image: imageUrl,
+        updatedAt: Timestamp.now(),
+      });
       dispatch({
         type: types.EDIT_PRODUCT_SUCCESS,
         payload: product,
