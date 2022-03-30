@@ -160,7 +160,7 @@ export const deleteProduct = (product, { onSuccess, onError }) => {
           type: types.DELETE_PRODUCT_SUCCESS,
           payload: product,
         });
-        onError(onSuccess);
+        onSuccess();
       })
       .catch((error) => {
         dispatch({
