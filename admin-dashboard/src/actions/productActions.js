@@ -1,4 +1,4 @@
-import { db, storage } from "../../firebase";
+import { db, storage } from "../firebase";
 import {
   getDocs,
   getDoc,
@@ -10,7 +10,7 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
-import * as types from "../actionTypes";
+import * as types from "../constants/actionTypes";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 const productsRef = collection(db, "products");

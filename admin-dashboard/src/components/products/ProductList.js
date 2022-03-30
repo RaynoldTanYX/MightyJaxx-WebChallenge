@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductList } from "../../redux/actions/productActions";
+import { fetchProductList } from "../../actions/productActions";
 import AddProductCard from "./AddProductCard";
 import LoadingProductCard from "./LoadingProductCard";
 import ProductCard from "./ProductCard";

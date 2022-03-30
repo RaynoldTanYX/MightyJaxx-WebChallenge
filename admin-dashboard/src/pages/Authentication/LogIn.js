@@ -8,10 +8,7 @@ import {
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  checkLocalStorageForLogin,
-  login,
-} from "../../redux/actions/userActions";
+import { checkLocalStorageForLogin, login } from "../../actions/userActions";
 import { Navigate } from "react-router-dom";
 
 const LogIn = () => {

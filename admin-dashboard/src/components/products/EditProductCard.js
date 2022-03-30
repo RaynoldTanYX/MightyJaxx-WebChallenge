@@ -7,7 +7,7 @@ import {
   addProduct,
   deleteProduct,
   editProduct,
-} from "../../redux/actions/productActions";
+} from "../../actions/productActions";
 
 const EditProductCard = ({ product, onCancel }) => {
   const { loading } = useSelector((state) => state.products.product);

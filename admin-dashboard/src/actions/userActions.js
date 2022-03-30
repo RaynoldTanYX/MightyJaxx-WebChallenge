@@ -1,6 +1,6 @@
-import { auth } from "../../firebase";
+import { auth } from "../firebase";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import * as types from "../actionTypes";
+import * as types from "../constants/actionTypes";
 
 const loginInitiate = () => ({
   type: types.LOGIN_INITIATE,
